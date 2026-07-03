@@ -3,15 +3,15 @@ export default function HeroSection() {
     <section className="glass-card border border-white/10 p-10 shadow-glow">
       <div className="grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
         <div className="space-y-6">
-          <p className="text-sm uppercase tracking-[0.35em] text-itera-textMuted">UKM Lembaga Pers ITERA</p>
+          <p className="text-sm uppercase tracking-[0.35em] text-itera-textMuted">UKM UKM Lembaga Pers ITERA</p>
           <h1 className="text-5xl font-extrabold leading-tight text-white">
             Portal Berita Kampus Itera dengan Nuansa Glassmorphism & Dark Mode.
           </h1>
           <p className="max-w-2xl text-lg text-itera-textMuted">
-            Selamat datang di situs resmi Lembaga Pers ITERA, tempat suara mahasiswa, aspirasi kampus, dan program kerja berintegritas berpadu dalam pengalaman digital modern.
+            Selamat datang di situs resmi UKM Lembaga Pers ITERA, tempat suara mahasiswa, aspirasi kampus, dan program kerja berintegritas berpadu dalam pengalaman digital modern.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a href="/aspirasi" className="rounded-full bg-itera-accent px-6 py-3 text-sm font-bold text-black transition hover:bg-itera-accentSecondary">
+            <a href="https://interaksi.vercel.app/" target="_blank" rel="noopener noreferrer" className="rounded-full bg-itera-accent px-6 py-3 text-sm font-bold text-black transition hover:bg-itera-accentSecondary">
               Kirim Aspirasi
             </a>
             <a href="/oprec" className="rounded-full border border-itera-gold px-6 py-3 text-sm font-bold text-itera-gold transition hover:bg-itera-gold/10">

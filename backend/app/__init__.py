@@ -4,7 +4,7 @@ from .routers import aspirasi, auth, news
 
 app = FastAPI(
     title='LPI Web Profile API',
-    description='Backend API untuk portal berita, aspirasi, dan manajemen pengurus Lembaga Pers ITERA.',
+    description='Backend API untuk portal berita, aspirasi, dan manajemen pengurus UKM Lembaga Pers ITERA.',
     version='0.1.0',
 )
 

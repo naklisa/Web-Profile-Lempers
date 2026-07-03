@@ -9,6 +9,9 @@ __pycache__/
 *.py[cod]
 *.env
 .venv/
+D:\ORGANISASIEH\Lempers\.venv
+D:\ORGANISASIEH\Lempers\backend\.venv
+
 
 # Editor
 .vscode/
