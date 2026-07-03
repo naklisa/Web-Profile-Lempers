@@ -1,43 +1,70 @@
 'use client';
 
+import { useState, useMemo, useEffect } from 'react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import ImprovedOrganizationalChart from '@/components/ImprovedOrganizationalChart';
+import { organizationalData } from '@/components/OrganizationalStructure';
 
 export default function TeamPage() {
-  const stats = [
-    { label: 'Total Anggota', value: '50+' },
-    { label: 'Divisi Aktif', value: '6' },
-    { label: 'Tahun Berdiri', value: '3+' },
-    { label: 'Event Terliput', value: '100+' },
-  ];
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedMember, setSelectedMember] = useState<{ member: any; dept: string; role: string; staffList?: any[] } | null>(null);
 
-  const cultureItems = [
-    {
-      title: '🎯 Fokus pada Misi',
-      desc: 'Setiap anggota tim berkomitmen pada misi utama Lembaga Pers untuk memberikan informasi berkualitas dan tepercaya.',
-    },
-    {
-      title: '🤝 Kolaborasi Erat',
-      desc: 'Kami percaya bahwa hasil jurnalistik terbaik datang dari kerja sama tim yang solid, terbuka, dan saling mendukung.',
-    },
-    {
-      title: '📈 Pertumbuhan Berkelanjutan',
-      desc: 'Kami terus belajar, mengevaluasi tulisan, dan meningkatkan keterampilan teknis maupun etika media secara berkala.',
-    },
-    {
-      title: '🎨 Kreativitas Tinggi',
-      desc: 'Mendorong inovasi dalam penyampaian infografis, video jurnalisme, dan interaktivitas website modern.',
-    },
-    {
-      title: '✅ Standar Tinggi',
-      desc: 'Kami mengejar kualitas editorial tinggi mulai dari verifikasi narasumber, cek fakta, hingga penyuntingan akhir.',
-    },
-    {
-      title: '🌟 Integritas Penuh',
-      desc: 'Prinsip independensi dan kode etik pers mahasiswa adalah jangkar utama dari setiap tulisan yang kami terbitkan.',
-    },
-  ];
+  // Close modal on Esc keypress
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedMember(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+
+
+  // Flat list of all members for search indexing
+  const allMembers = useMemo(() => {
+    const list: { member: any; deptName: string; roleName: string }[] = [];
+    organizationalData.forEach((dept) => {
+      // Direct members / Core leadership
+      dept.members.forEach((m) => {
+        list.push({ member: m, deptName: dept.name, roleName: m.role });
+      });
+      // Subdivision members
+      if (dept.subdivisions) {
+        dept.subdivisions.forEach((sub) => {
+          // Head of subdivision
+          list.push({ member: sub.head, deptName: `${dept.name} - ${sub.title}`, roleName: sub.head.role });
+          // Staff
+          sub.staff.forEach((s) => {
+            list.push({ member: s, deptName: `${dept.name} - ${sub.title}`, roleName: s.role });
+          });
+        });
+      }
+    });
+
+    // Deduplicate by NIM
+    const seenNims = new Set<string>();
+    return list.filter((item) => {
+      if (seenNims.has(item.member.nim)) return false;
+      seenNims.add(item.member.nim);
+      return true;
+    });
+  }, []);
+
+  // Filter members by search query
+  const filteredMembers = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase().trim();
+    return allMembers.filter(
+      (item) =>
+        item.member.name.toLowerCase().includes(query) ||
+        item.member.nim.includes(query) ||
+        item.roleName.toLowerCase().includes(query) ||
+        item.deptName.toLowerCase().includes(query)
+    );
+  }, [searchQuery, allMembers]);
 
   return (
     <>
@@ -62,108 +89,177 @@ export default function TeamPage() {
           </div>
         </section>
 
-        {/* Organizational Chart */}
-        <section className="px-6 py-16 max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-12 space-y-2">
-            <h2 className="text-3xl font-extrabold">Struktur Organisasi</h2>
-            <p className="text-itera-textMuted text-sm">Pembagian bidang kerja dan kepengurusan aktif periode 2026/2027.</p>
-          </div>
-          <div className="glass-card rounded-3xl p-6 md:p-10 border border-white/5 overflow-x-auto">
-            <ImprovedOrganizationalChart />
+        {/* Search Bar Section */}
+        <section className="px-6 py-4 max-w-7xl mx-auto relative z-10">
+          <div className="flex justify-center mb-8 max-w-xl mx-auto">
+            {/* Search Input */}
+            <div className="relative w-full">
+              <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-itera-textMuted">
+                <i className="fa-solid fa-magnifying-glass" />
+              </span>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari nama pengurus, jabatan, atau NIM..."
+                className="w-full pl-11 pr-10 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-itera-red/40 focus:border-itera-red transition-all"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-zinc-500 hover:text-white transition"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
         </section>
 
-        {/* Team Culture */}
-        <section className="px-6 py-16 max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-12 space-y-2">
-            <h2 className="text-3xl font-extrabold">Budaya Kerja Kami</h2>
-            <p className="text-itera-textMuted text-sm">Etos kerja yang kami pegang teguh dalam menjalankan tugas jurnalistik sehari-hari.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {cultureItems.map((culture, idx) => (
-              <div
-                key={idx}
-                className="glass-card rounded-2xl p-6 border border-white/5 hover:border-itera-gold/20 hover:shadow-glow/10 transition-all duration-300 group"
+        {/* Structure Content */}
+        <section className="px-6 py-6 max-w-7xl mx-auto relative z-10">
+          {searchQuery.trim() ? (
+            <div className="max-w-5xl mx-auto space-y-6">
+              <div className="flex items-center space-x-2">
+                <span className="h-5 w-1 rounded-full bg-itera-gold" />
+                <p className="text-sm font-bold text-white">Hasil Pencarian: {filteredMembers.length} Anggota</p>
+              </div>
+
+              {filteredMembers.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {filteredMembers.map((item, idx) => (
+                    <div 
+                      key={idx}
+                      onClick={() => setSelectedMember({ member: item.member, dept: item.deptName, role: item.roleName })}
+                      className="glass-card p-5 rounded-2xl border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.02] cursor-pointer flex items-center gap-4"
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-itera-red to-itera-gold flex items-center justify-center text-white font-extrabold text-sm flex-shrink-0">
+                        {item.member.name.charAt(0)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="font-bold text-white text-sm truncate">{item.member.name}</h4>
+                        <p className="text-xs text-itera-gold font-semibold truncate uppercase tracking-wider">{item.roleName}</p>
+                        <p className="text-[10px] text-itera-textMuted mt-0.5">NIM: {item.member.nim} • {item.deptName}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16 bg-zinc-900/10 border border-dashed border-zinc-800 rounded-3xl space-y-4">
+                  <div className="w-12 h-12 bg-zinc-900/40 flex items-center justify-center rounded-xl mx-auto text-itera-gold">
+                    <i className="fa-solid fa-user-slash text-xl" />
+                  </div>
+                  <p className="text-sm text-itera-textMuted">Anggota tidak ditemukan. Coba gunakan kata kunci lain.</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="glass-card rounded-3xl p-6 md:p-10 border border-white/5 overflow-x-auto">
+              <ImprovedOrganizationalChart onMemberClick={(member, dept, role, staffList) => setSelectedMember({ member, dept, role, staffList })} />
+            </div>
+          )}
+        </section>
+
+
+
+        {/* Member Detail Modal */}
+        {selectedMember && (
+          <div 
+            onClick={() => setSelectedMember(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300 cursor-pointer"
+          >
+            <div 
+              onClick={(e) => e.stopPropagation()}
+              className="relative glass-card max-w-md w-full rounded-3xl p-8 border border-white/10 shadow-2xl space-y-6 transform scale-100 transition-transform duration-300 cursor-default"
+            >
+              {/* Close Button */}
+              <button 
+                type="button"
+                onClick={() => setSelectedMember(null)}
+                className="absolute top-4 right-4 text-zinc-400 hover:text-white transition text-lg"
               >
-                <h3 className="font-extrabold text-white text-lg mb-3 flex items-center gap-2">
-                  {culture.title}
-                </h3>
-                <p className="text-itera-textMuted text-xs leading-relaxed">{culture.desc}</p>
+                ✕
+              </button>
+
+              <div className="text-center space-y-4">
+                {/* Avatar Generator */}
+                <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-tr from-itera-red to-itera-gold p-1 shadow-lg shadow-itera-red/20">
+                  <div className="w-full h-full rounded-2xl bg-zinc-950 flex items-center justify-center text-3xl text-white font-extrabold select-none">
+                    {selectedMember.member.name.charAt(0)}{selectedMember.member.name.split(' ')[1]?.charAt(0) || ''}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <h3 className="text-lg font-extrabold text-white">{selectedMember.member.name}</h3>
+                  <p className="text-xs text-itera-gold font-bold uppercase tracking-wider">{selectedMember.role}</p>
+                  <p className="text-[11px] text-itera-textMuted">NIM: {selectedMember.member.nim}</p>
+                </div>
               </div>
-            ))}
+
+              <div className="border-t border-white/5 pt-4 space-y-3 text-xs text-itera-textMuted">
+                <div className="flex justify-between">
+                  <span>Departemen</span>
+                  <span className="font-bold text-white text-right">{selectedMember.dept}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Instansi</span>
+                  <span className="font-semibold text-white">Lembaga Pers ITERA</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Status Kru</span>
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold uppercase tracking-wider text-[9px]">Aktif</span>
+                </div>
+              </div>
+
+              {/* Staff List inside Modal */}
+              {selectedMember.staffList && selectedMember.staffList.length > 0 && (
+                <div className="border-t border-white/5 pt-4 space-y-3">
+                  <p className="text-[10px] font-extrabold uppercase tracking-widest text-itera-textMuted opacity-70">
+                    Anggota Divisi ({selectedMember.staffList.length})
+                  </p>
+                  <div className="max-h-40 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                    {selectedMember.staffList.map((staff, sIdx) => (
+                      <div 
+                        key={sIdx}
+                        className="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5 text-xs"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <p className="font-bold text-white truncate">{staff.name}</p>
+                          <p className="text-[10px] text-itera-textMuted mt-0.5">NIM: {staff.nim}</p>
+                        </div>
+                        <span className="px-2 py-0.5 rounded bg-zinc-900 text-zinc-400 text-[8px] font-bold uppercase tracking-wider">
+                          Staff
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-center gap-3 pt-2">
+                <a 
+                  href="https://instagram.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:bg-white/10 hover:text-white transition"
+                  title="Instagram"
+                >
+                  <i className="fa-brands fa-instagram" />
+                </a>
+                <a 
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:bg-white/10 hover:text-white transition"
+                  title="LinkedIn"
+                >
+                  <i className="fa-brands fa-linkedin-in" />
+                </a>
+              </div>
+            </div>
           </div>
-        </section>
-
-        {/* Join Us Section */}
-        <section className="px-6 py-16 max-w-5xl mx-auto relative z-10">
-          <div className="glass-card rounded-3xl p-8 md:p-12 border border-white/5 bg-gradient-to-br from-itera-card via-zinc-950 to-itera-card text-center space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-black">Bergabung Dengan Kami</h2>
-              <p className="text-itera-textMuted text-sm max-w-2xl mx-auto">
-                Kami selalu membuka ruang bagi mahasiswa ITERA yang ingin belajar dan bertumbuh di bidang kejurnalistikan, desain visual, videografi, serta pengembangan sistem informasi media.
-              </p>
-            </div>
-
-            <div className="inline-block p-6 rounded-2xl bg-white/5 border border-white/5 max-w-xl mx-auto">
-              <p className="text-white/80 text-sm font-semibold mb-2">Pendaftaran Magang Pers LPI</p>
-              <p className="text-2xl font-black text-itera-gold mb-2">Setiap Awal Semester</p>
-              <p className="text-itera-textMuted text-xs mb-4">Daftarkan diri Anda untuk merasakan atmosfer kerja media kampus secara nyata.</p>
-              <a
-                href="/oprec"
-                className="inline-block px-6 py-3 bg-gradient-to-r from-itera-gold to-itera-red text-white text-sm font-bold rounded-xl hover:shadow-lg hover:shadow-itera-red/40 transition duration-300"
-              >
-                Lihat Formulir Magang
-              </a>
-            </div>
-
-            <div className="pt-4 max-w-2xl mx-auto">
-              <h3 className="font-bold text-white text-sm uppercase tracking-widest mb-4">Ketentuan Pendaftaran</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left text-xs text-itera-textMuted">
-                <div className="flex gap-2">
-                  <span className="text-itera-gold">✓</span>
-                  <span>Mahasiswa aktif ITERA dari semua jurusan.</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-itera-gold">✓</span>
-                  <span>Memiliki ketertarikan kuat pada media/jurnalistik.</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-itera-gold">✓</span>
-                  <span>Bersedia meluangkan waktu secara aktif dan berkomitmen.</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-itera-gold">✓</span>
-                  <span>Mampu bekerja dalam tim maupun di bawah tenggat waktu.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Leadership Message */}
-        <section className="px-6 py-16 max-w-4xl mx-auto relative z-10">
-          <div className="glass-card rounded-3xl p-8 md:p-10 border border-white/5 relative">
-            <span className="absolute -top-5 left-10 px-4 py-1 rounded-full bg-itera-red text-white text-xs font-bold uppercase tracking-wider border border-white/10 shadow-lg">
-              Pesan Pemimpin Umum
-            </span>
-            <div className="space-y-6 pt-4 text-center md:text-left md:flex md:items-center md:gap-8">
-              <div className="flex-shrink-0 w-24 h-24 mx-auto rounded-2xl bg-gradient-to-tr from-itera-gold to-itera-red p-1">
-                <div className="w-full h-full rounded-2xl bg-zinc-950 flex items-center justify-center text-4xl">
-                  👨‍💼
-                </div>
-              </div>
-              <div className="space-y-4">
-                <p className="text-white/80 italic text-lg leading-relaxed">
-                  "UKM Lembaga Pers ITERA bukan sekadar organisasi pers kampus biasa. LPI adalah laboratorium kehidupan bagi mahasiswa untuk mengasah pemikiran kritis, memperkuat kepekaan sosial, serta melatih integritas moral yang tinggi melalui tulisan dan karya visual."
-                </p>
-                <div>
-                  <h4 className="font-extrabold text-white">Arvel Alyagin</h4>
-                  <p className="text-itera-textMuted text-xs">Pemimpin Umum LPI ITERA 2026/2027</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        )}
       </main>
       <Footer />
     </>

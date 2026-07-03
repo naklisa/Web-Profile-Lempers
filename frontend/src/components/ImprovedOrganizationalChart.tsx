@@ -159,115 +159,314 @@ const departments: Department[] = [
   },
 ];
 
-const MemberCard = ({ member, role, color }: { member: Member; role?: string; color?: string }) => (
-  <div className={`relative group rounded-lg p-3 ${color || 'bg-gradient-to-br from-zinc-800 to-zinc-900'} border border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-lg`}>
-    <div className="flex flex-col gap-1">
-      <p className="font-bold text-sm text-white truncate">{member.name}</p>
-      {role && <p className="text-xs text-white/60 font-semibold">{role}</p>}
-      <p className="text-xs text-white/40">{member.nim}</p>
+const MemberCard = ({ member, role, color, onClick, staffCount }: { member: Member; role?: string; color?: string; onClick?: () => void; staffCount?: number }) => (
+  <div 
+    onClick={onClick}
+    className={`relative group rounded-xl p-2.5 bg-zinc-950 border border-white/10 hover:border-white/30 transition-all duration-300 hover:shadow-lg cursor-pointer hover:scale-[1.02] text-center w-full`}
+  >
+    <div className="flex flex-col gap-1 items-center justify-center min-w-0">
+      {role && <p className="text-[9px] md:text-[10px] text-white/50 font-bold uppercase tracking-wider truncate w-full">{role}</p>}
+      <p className="font-extrabold text-xs md:text-sm text-white break-words leading-tight mt-0.5 whitespace-normal w-full">{member.name}</p>
+      {staffCount && staffCount > 0 ? (
+        <span className="mt-1.5 px-2 py-0.5 rounded-full bg-itera-gold/10 border border-itera-gold/20 text-[9px] text-itera-gold font-bold uppercase tracking-wider flex items-center gap-1 group-hover:bg-itera-gold/20 transition-all select-none">
+          <i className="fa-solid fa-users text-[8px]" />
+          {staffCount} Anggota
+        </span>
+      ) : null}
     </div>
     <div className="absolute inset-0 rounded-lg bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
   </div>
 );
 
-const BPHSection = () => (
-  <div className="mb-12">
-    <h2 className="text-2xl font-bold text-white mb-6 text-center">BPH (BADAN PENGURUS HARIAN)</h2>
-    <div className="flex flex-col items-center gap-6">
+const BPHSection = ({ onMemberClick }: { onMemberClick?: (member: Member, dept: string, role: string, staffList?: Member[]) => void }) => {
+  const pUmum = bphPositions[0]; // Pemimpin Umum
+  const sekUmum = bphPositions[1]; // Sekretaris Umum
+  const bendUmum = bphPositions[2]; // Bendahara Umum
+  const sek1 = bphPositions[3]; // Sekretaris 1
+  const bend1 = bphPositions[4]; // Bendahara 1
+
+  return (
+    <div className="flex flex-col items-center w-full">
       {/* Pemimpin Umum */}
-      <div className="flex justify-center w-full">
-        <div className="w-64">
-          <MemberCard 
-            member={bphPositions[0].member} 
-            role={bphPositions[0].name} 
-            color="bg-gradient-to-br from-red-600 to-red-700"
-          />
-        </div>
-      </div>
-
-      {/* Connector */}
-      <div className="h-8 w-1 bg-gradient-to-b from-red-500/50 to-white/20"></div>
-
-      {/* Level 1 positions */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl">
-        {bphPositions.slice(1).map((pos, idx) => (
-          <div key={idx} className="flex flex-col items-center">
-            <div className="w-full h-6 border-t-2 border-white/20"></div>
-            <MemberCard 
-              member={pos.member} 
-              role={pos.name}
-              color={`bg-gradient-to-br ${pos.color}`}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-const DepartmentSection = ({ dept }: { dept: Department }) => (
-  <div className="mb-8">
-    <h3 className={`text-xl font-bold text-white mb-4 pb-2 border-l-4 pl-4 bg-gradient-to-r ${dept.color} bg-clip-text text-transparent`}>
-      BIDANG {dept.name}
-    </h3>
-
-    {/* Department Head */}
-    <div className="mb-6 ml-4">
-      <p className="text-xs text-white/50 font-semibold mb-2">Kepala Bidang</p>
-      <div className="max-w-sm">
+      <div className="w-64 z-10">
         <MemberCard 
-          member={dept.head} 
-          color={`bg-gradient-to-br ${dept.color}`}
+          member={pUmum.member} 
+          role={pUmum.name} 
+          color="bg-zinc-950"
+          onClick={() => onMemberClick?.(pUmum.member, 'BPH', pUmum.name)}
         />
       </div>
-    </div>
 
-    {/* Subdivisions or Members */}
-    {dept.subdivisions && dept.subdivisions.length > 0 ? (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ml-4">
-        {dept.subdivisions.map((sub, idx) => (
-          <div key={idx} className="bg-white/5 rounded-lg p-4 border border-white/10">
-            <p className="text-sm font-semibold text-white/70 mb-3 uppercase">Divisi {sub.name}</p>
-            <div className="space-y-3">
-              <div>
-                <p className="text-xs text-white/40 mb-1">Kepala Divisi</p>
-                <MemberCard member={sub.head} />
-              </div>
-              {sub.members.length > 0 && (
-                <div>
-                  <p className="text-xs text-white/40 mb-2">Anggota</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {sub.members.map((member, midx) => (
-                      <MemberCard key={midx} member={member} />
-                    ))}
-                  </div>
-                </div>
-              )}
+      {/* Vertical line from Pemimpin Umum */}
+      <div className="h-6 w-0.5 bg-zinc-700"></div>
+
+      {/* Horizontal connector line for Sekretaris & Bendahara */}
+      <div className="w-[60%] flex h-px relative">
+        <div className="absolute left-[25%] right-[25%] top-0 h-px bg-zinc-700"></div>
+        {/* Central vertical line continuing down */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 h-4 w-0.5 bg-zinc-700"></div>
+      </div>
+      <div className="flex justify-between w-[60%] h-4 relative">
+        <div className="absolute left-[25%] top-0 h-full w-px bg-zinc-700"></div>
+        <div className="absolute right-[25%] top-0 h-full w-px bg-zinc-700"></div>
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-0.5 bg-zinc-700"></div>
+      </div>
+
+      {/* Sekretaris and Bendahara Columns */}
+      <div className="flex justify-between w-[60%] gap-8 relative pb-6">
+        {/* Continuous center vertical line running through BPH gap */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-zinc-700"></div>
+
+        {/* Left Column: Sekretaris */}
+        <div className="flex flex-col items-center w-1/2 z-10">
+          <div className="w-full max-w-[200px]">
+            <MemberCard 
+              member={sekUmum.member} 
+              role={sekUmum.name}
+              onClick={() => onMemberClick?.(sekUmum.member, 'BPH', sekUmum.name)}
+            />
+          </div>
+          <div className="h-6 w-0.5 bg-zinc-700"></div>
+          <div className="w-full max-w-[200px]">
+            <MemberCard 
+              member={sek1.member} 
+              role={sek1.name}
+              onClick={() => onMemberClick?.(sek1.member, 'BPH', sek1.name)}
+            />
+          </div>
+        </div>
+
+        {/* Right Column: Bendahara */}
+        <div className="flex flex-col items-center w-1/2 z-10">
+          <div className="w-full max-w-[200px]">
+            <MemberCard 
+              member={bendUmum.member} 
+              role={bendUmum.name}
+              onClick={() => onMemberClick?.(bendUmum.member, 'BPH', bendUmum.name)}
+            />
+          </div>
+          <div className="h-6 w-0.5 bg-zinc-700"></div>
+          <div className="w-full max-w-[200px]">
+            <MemberCard 
+              member={bend1.member} 
+              role={bend1.name}
+              onClick={() => onMemberClick?.(bend1.member, 'BPH', bend1.name)}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DepartmentSectionHorizontal = ({ onMemberClick }: { onMemberClick?: (member: Member, dept: string, role: string, staffList?: Member[]) => void }) => {
+  const redaksi = departments[0];
+  const publicRelation = departments[1];
+  const mediaKreatif = departments[2];
+  const pengembangan = departments[3];
+  const usaha = departments[4];
+
+  // Combine subdivision staff for department-level views
+  const redaksiStaff = [
+    ...(redaksi.subdivisions?.[0]?.members || []),
+    ...(redaksi.subdivisions?.[1]?.members || [])
+  ];
+
+  const mediaStaff = [
+    ...(mediaKreatif.subdivisions?.[0]?.members || []),
+    ...(mediaKreatif.subdivisions?.[1]?.members || []),
+    ...(mediaKreatif.subdivisions?.[2]?.members || []),
+    ...(mediaKreatif.subdivisions?.[3]?.members || [])
+  ];
+
+  const prStaff = publicRelation.subdivisions?.[0]?.members || [];
+  const devStaff = pengembangan.subdivisions?.[0]?.members || [];
+  const usahaStaff = usaha.subdivisions?.[0]?.members || [];
+
+  return (
+    <div className="flex flex-col items-center w-full">
+      {/* Top vertical connector meeting the BPH center line */}
+      <div className="h-8 w-0.5 bg-zinc-700"></div>
+
+      {/* Flex container for the 5 columns */}
+      <div className="flex justify-between w-full gap-4 items-start pt-6 relative">
+        
+        {/* Column 1: Redaksi */}
+        <div className="flex flex-col items-center w-[20%] relative">
+          {/* Vertical tick connecting to main horizontal line */}
+          <div className="absolute top-0 h-6 w-0.5 bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+          {/* Horizontal line segment: from center to right edge + half gap */}
+          <div className="absolute top-0 right-[-8px] left-1/2 h-px bg-zinc-700 -translate-y-6"></div>
+          
+          <div className="w-full">
+            <MemberCard
+              member={redaksi.head}
+              role="Redaksi"
+              staffCount={redaksiStaff.length}
+              onClick={() => onMemberClick?.(redaksi.head, 'Redaksi', 'Pemimpin Redaksi', redaksiStaff)}
+            />
+          </div>
+
+          {/* Subdivisions: Reporter & Penulis */}
+          <div className="h-6 w-0.5 bg-zinc-700"></div>
+          
+          {/* Subdivision boxes with precise center connectors */}
+          <div className="flex justify-between w-full gap-2 relative pt-6">
+            <div className="w-1/2 relative">
+              {/* Vertical tick */}
+              <div className="absolute top-0 h-6 w-px bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+              {/* Horizontal segment: from center to right edge + half gap (4px) */}
+              <div className="absolute top-0 right-[-4px] left-1/2 h-px bg-zinc-700 -translate-y-6"></div>
+              <MemberCard
+                member={redaksi.subdivisions![0].head}
+                role="Reporter"
+                staffCount={redaksi.subdivisions![0].members.length}
+                onClick={() => onMemberClick?.(redaksi.subdivisions![0].head, 'Redaksi - Reporter', 'Redaktur Berita', redaksi.subdivisions![0].members)}
+              />
+            </div>
+            <div className="w-1/2 relative">
+              {/* Vertical tick */}
+              <div className="absolute top-0 h-6 w-px bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+              {/* Horizontal segment: from left edge - half gap (4px) to center */}
+              <div className="absolute top-0 left-[-4px] right-1/2 h-px bg-zinc-700 -translate-y-6"></div>
+              <MemberCard
+                member={redaksi.subdivisions![1].head}
+                role="Penulis"
+                staffCount={redaksi.subdivisions![1].members.length}
+                onClick={() => onMemberClick?.(redaksi.subdivisions![1].head, 'Redaksi - Penulis', 'Redaktur Opini', redaksi.subdivisions![1].members)}
+              />
             </div>
           </div>
-        ))}
-      </div>
-    ) : (
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 ml-4">
-        {dept.members.map((member, idx) => (
-          <MemberCard key={idx} member={member} />
-        ))}
-      </div>
-    )}
-  </div>
-);
-
-export default function ImprovedOrganizationalChart() {
-  return (
-    <div className="w-full py-12 px-6 bg-gradient-to-b from-zinc-950 to-zinc-900 rounded-2xl border border-white/10">
-      <div className="max-w-6xl mx-auto">
-        <BPHSection />
-        <div className="border-t border-white/10 my-12 pt-12">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">STRUKTUR DEPARTEMEN</h2>
-          {departments.map((dept, idx) => (
-            <DepartmentSection key={idx} dept={dept} />
-          ))}
         </div>
+
+        {/* Column 2: Media Kreatif */}
+        <div className="flex flex-col items-center w-[36%] relative">
+          {/* Vertical tick */}
+          <div className="absolute top-0 h-6 w-0.5 bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+          {/* Horizontal line segment: spans all the way (with margins to meet neighbors) */}
+          <div className="absolute top-0 left-[-8px] right-[-8px] h-px bg-zinc-700 -translate-y-6"></div>
+          
+          <div className="w-full max-w-[240px]">
+            <MemberCard
+              member={mediaKreatif.head}
+              role="Media Kreatif"
+              staffCount={mediaStaff.length}
+              onClick={() => onMemberClick?.(mediaKreatif.head, 'Media Kreatif', 'Produser', mediaStaff)}
+            />
+          </div>
+
+          {/* Subdivisions: Fotografi, Videografi, Desain, Publikasi Medsos */}
+          <div className="h-6 w-0.5 bg-zinc-700"></div>
+          
+          {/* The 4 subdivisions grid with precise center connectors */}
+          <div className="grid grid-cols-4 gap-2 w-full relative pt-6">
+            <div className="relative">
+              {/* Vertical tick */}
+              <div className="absolute top-0 h-6 w-px bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+              {/* Horizontal segment: from center to right edge + half gap (4px) */}
+              <div className="absolute top-0 right-[-4px] left-1/2 h-px bg-zinc-700 -translate-y-6"></div>
+              <MemberCard
+                member={mediaKreatif.subdivisions![1].head}
+                role="Fotografi"
+                staffCount={mediaKreatif.subdivisions![1].members.length}
+                onClick={() => onMemberClick?.(mediaKreatif.subdivisions![1].head, 'Media Kreatif - Fotografi', 'Kepala Divisi', mediaKreatif.subdivisions![1].members)}
+              />
+            </div>
+            <div className="relative">
+              {/* Vertical tick */}
+              <div className="absolute top-0 h-6 w-px bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+              {/* Horizontal segment: spans all the way */}
+              <div className="absolute top-0 left-[-4px] right-[-4px] h-px bg-zinc-700 -translate-y-6"></div>
+              <MemberCard
+                member={mediaKreatif.subdivisions![2].head}
+                role="Videografi"
+                staffCount={mediaKreatif.subdivisions![2].members.length}
+                onClick={() => onMemberClick?.(mediaKreatif.subdivisions![2].head, 'Media Kreatif - Videografi', 'Kepala Divisi', mediaKreatif.subdivisions![2].members)}
+              />
+            </div>
+            <div className="relative">
+              {/* Vertical tick */}
+              <div className="absolute top-0 h-6 w-px bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+              {/* Horizontal segment: spans all the way */}
+              <div className="absolute top-0 left-[-4px] right-[-4px] h-px bg-zinc-700 -translate-y-6"></div>
+              <MemberCard
+                member={mediaKreatif.subdivisions![0].head}
+                role="Desain"
+                staffCount={mediaKreatif.subdivisions![0].members.length}
+                onClick={() => onMemberClick?.(mediaKreatif.subdivisions![0].head, 'Media Kreatif - Desain', 'Kepala Divisi', mediaKreatif.subdivisions![0].members)}
+              />
+            </div>
+            <div className="relative">
+              {/* Vertical tick */}
+              <div className="absolute top-0 h-6 w-px bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+              {/* Horizontal segment: from left edge - half gap (4px) to center */}
+              <div className="absolute top-0 left-[-4px] right-1/2 h-px bg-zinc-700 -translate-y-6"></div>
+              <MemberCard
+                member={mediaKreatif.subdivisions![3].head}
+                role="Publikasi Medsos"
+                staffCount={mediaKreatif.subdivisions![3].members.length}
+                onClick={() => onMemberClick?.(mediaKreatif.subdivisions![3].head, 'Media Kreatif - Publikasi Medsos', 'Kepala Divisi', mediaKreatif.subdivisions![3].members)}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Column 3: Pengembangan */}
+        <div className="flex flex-col items-center w-[14%] relative">
+          <div className="absolute top-0 h-6 w-0.5 bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+          {/* Horizontal segment: spans all the way */}
+          <div className="absolute top-0 left-[-8px] right-[-8px] h-px bg-zinc-700 -translate-y-6"></div>
+          <div className="w-full">
+            <MemberCard
+              member={pengembangan.head}
+              role="Pengembangan"
+              staffCount={devStaff.length}
+              onClick={() => onMemberClick?.(pengembangan.head, 'Pengembangan', 'Project Manager', devStaff)}
+            />
+          </div>
+        </div>
+
+        {/* Column 4: Public Relation */}
+        <div className="flex flex-col items-center w-[15%] relative">
+          <div className="absolute top-0 h-6 w-0.5 bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+          {/* Horizontal segment: spans all the way */}
+          <div className="absolute top-0 left-[-8px] right-[-8px] h-px bg-zinc-700 -translate-y-6"></div>
+          <div className="w-full">
+            <MemberCard
+              member={publicRelation.head}
+              role="Public Relation"
+              staffCount={prStaff.length}
+              onClick={() => onMemberClick?.(publicRelation.head, 'Public Relation', 'Manager', prStaff)}
+            />
+          </div>
+        </div>
+
+        {/* Column 5: Usaha */}
+        <div className="flex flex-col items-center w-[15%] relative">
+          <div className="absolute top-0 h-6 w-0.5 bg-zinc-700 -translate-y-6 left-1/2 -translate-x-1/2"></div>
+          {/* Horizontal segment: from left edge - half gap (8px) to center */}
+          <div className="absolute top-0 left-[-8px] right-1/2 h-px bg-zinc-700 -translate-y-6"></div>
+          <div className="w-full">
+            <MemberCard
+              member={usaha.head}
+              role="Usaha"
+              staffCount={usahaStaff.length}
+              onClick={() => onMemberClick?.(usaha.head, 'Usaha', 'Manager Usaha', usahaStaff)}
+            />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default function ImprovedOrganizationalChart({ onMemberClick }: { onMemberClick?: (member: Member, dept: string, role: string, staffList?: Member[]) => void }) {
+  return (
+    <div className="w-full py-12 px-6 bg-gradient-to-b from-zinc-950 to-zinc-900 rounded-2xl border border-white/10 min-w-[1150px]">
+      <div className="max-w-6xl mx-auto flex flex-col items-center">
+        <BPHSection onMemberClick={onMemberClick} />
+        <DepartmentSectionHorizontal onMemberClick={onMemberClick} />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-interface Member {
+export interface Member {
   name: string;
   nim: string;
   role: string;
@@ -10,7 +10,7 @@ interface Member {
   division?: string;
 }
 
-interface Department {
+export interface Department {
   id: string;
   name: string;
   title: string;
@@ -22,13 +22,13 @@ interface Department {
   subdivisions?: Subdivision[];
 }
 
-interface Subdivision {
+export interface Subdivision {
   title: string;
   head: Member;
   staff: Member[];
 }
 
-const organizationalData: Department[] = [
+export const organizationalData: Department[] = [
   {
     id: 'bph',
     name: 'BPH INTI',
@@ -193,11 +193,15 @@ interface MemberCardProps {
   departmentColor: string;
   departmentBg: string;
   isSubdivision?: boolean;
+  onClick?: () => void;
 }
 
-function MemberCard({ member, departmentColor, departmentBg, isSubdivision }: MemberCardProps) {
+function MemberCard({ member, departmentColor, departmentBg, isSubdivision, onClick }: MemberCardProps) {
   return (
-    <div className={`glass-card p-4 rounded-2xl border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.02] ${isSubdivision ? 'bg-zinc-900/30' : ''}`}>
+    <div 
+      onClick={onClick}
+      className={`glass-card p-4 rounded-2xl border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.02] cursor-pointer ${isSubdivision ? 'bg-zinc-900/30' : ''}`}
+    >
       <div className="flex items-start gap-3">
         <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-extrabold text-lg flex-shrink-0 ${departmentBg} ${departmentColor} shadow-lg shadow-zinc-950/50`}>
           {member.name.charAt(0)}{member.name.split(' ')[1]?.charAt(0) || ''}
@@ -217,24 +221,26 @@ function MemberCard({ member, departmentColor, departmentBg, isSubdivision }: Me
   );
 }
 
-export default function OrganizationalStructure() {
+export default function OrganizationalStructure({ onMemberClick, hideHeader = true }: { onMemberClick?: (member: Member, dept: string, role: string) => void; hideHeader?: boolean }) {
   const [activeDept, setActiveDept] = useState('bph');
 
   const currentDept = organizationalData.find((d) => d.id === activeDept) || organizationalData[0];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12 space-y-12">
+    <section className="max-w-7xl mx-auto px-6 py-6 space-y-12">
       {/* Header */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 bg-itera-gold/10 border border-itera-gold/20 text-itera-gold text-xs font-bold uppercase rounded-full">
-          <i className="fa-solid fa-sitemap" />
-          <span>Kabinet Kepengurusan 2026/2027</span>
+      {!hideHeader && (
+        <div className="text-center max-w-3xl mx-auto space-y-4">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 bg-itera-gold/10 border border-itera-gold/20 text-itera-gold text-xs font-bold uppercase rounded-full">
+            <i className="fa-solid fa-sitemap" />
+            <span>Kabinet Kepengurusan 2026/2027</span>
+          </div>
+          <h2 className="font-extrabold text-4xl lg:text-5xl text-white leading-tight">Struktur Redaksi & Kru</h2>
+          <p className="text-sm text-itera-textMuted leading-relaxed">
+            Talenta kreatif di balik kemudi peliputan berita, desain buletin digital, pengembangan teknologi, dan seluruh operasional UKM Lembaga Pers ITERA.
+          </p>
         </div>
-        <h2 className="font-extrabold text-4xl lg:text-5xl text-white leading-tight">Struktur Redaksi & Kru</h2>
-        <p className="text-sm text-itera-textMuted leading-relaxed">
-          Talenta kreatif di balik kemudi peliputan berita, desain buletin digital, pengembangan teknologi, dan seluruh operasional UKM Lembaga Pers ITERA.
-        </p>
-      </div>
+      )}
 
       {/* Department Tabs */}
       <div className="glass-card p-3 rounded-2xl border border-zinc-800/80 overflow-x-auto">
@@ -279,7 +285,13 @@ export default function OrganizationalStructure() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {currentDept.members.map((member, idx) => (
-                <MemberCard key={idx} member={member} departmentColor={currentDept.color} departmentBg={currentDept.bgColor} />
+                <MemberCard 
+                  key={idx} 
+                  member={member} 
+                  departmentColor={currentDept.color} 
+                  departmentBg={currentDept.bgColor} 
+                  onClick={() => onMemberClick?.(member, currentDept.name, member.role)}
+                />
               ))}
             </div>
           </div>
@@ -308,6 +320,7 @@ export default function OrganizationalStructure() {
                     departmentColor={currentDept.color}
                     departmentBg={currentDept.bgColor}
                     isSubdivision
+                    onClick={() => onMemberClick?.(sub.head, `${currentDept.name} - ${sub.title}`, sub.head.role)}
                   />
 
                   {/* Staff Members */}
@@ -322,6 +335,7 @@ export default function OrganizationalStructure() {
                             departmentColor={currentDept.color}
                             departmentBg={currentDept.bgColor}
                             isSubdivision
+                            onClick={() => onMemberClick?.(staff, `${currentDept.name} - ${sub.title}`, staff.role)}
                           />
                         ))}
                       </div>

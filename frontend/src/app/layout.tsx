@@ -4,6 +4,9 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'UKM Lembaga Pers ITERA',
   description: 'Web Profil Resmi UKM Lembaga Pers ITERA dengan portal berita dan aspirasi kampus.',
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

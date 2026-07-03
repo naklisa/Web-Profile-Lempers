@@ -122,24 +122,67 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Nilai-Nilai Kami */}
-        <section className="px-6 py-16 max-w-7xl mx-auto text-center relative z-10">
-          <h2 className="text-3xl font-extrabold mb-12">Nilai-Nilai Utama LPI</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { icon: '✓', title: 'Kredibilitas', desc: 'Komitmen penuh pada akurasi data & kebenaran liputan.' },
-              { icon: '🎯', title: 'Profesionalisme', desc: 'Bekerja sesuai kode etik jurnalistik nasional.' },
-              { icon: '🤝', title: 'Integritas', desc: 'Menjunjung nilai kejujuran tanpa intervensi.' },
-              { icon: '💡', title: 'Inovasi', desc: 'Terus bereksplorasi dengan format media digital baru.' }
-            ].map((val, idx) => (
-              <div key={idx} className="glass-card rounded-2xl p-6 border border-white/5 hover:border-white/20 transition duration-300">
-                <div className="text-4xl mb-4 bg-gradient-to-r from-itera-gold to-itera-red bg-clip-text text-transparent inline-block font-extrabold">
-                  {val.icon}
+        {/* Makna Logo LPI */}
+        <section className="px-6 py-16 max-w-7xl mx-auto relative z-10">
+          <div className="glass-card rounded-3xl p-8 md:p-12 border border-white/5 bg-gradient-to-br from-itera-card via-zinc-950 to-itera-card">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              {/* Left Column: Logo Showcase */}
+              <div className="lg:col-span-4 flex flex-col items-center justify-center text-center space-y-4">
+                <div className="relative group p-4 rounded-3xl bg-white/5 border border-white/10 shadow-glow/5 hover:shadow-glow/15 transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-itera-red/10 to-itera-gold/10 rounded-3xl blur-xl pointer-events-none group-hover:scale-110 transition duration-300" />
+                  <img 
+                    src="/logo.png" 
+                    alt="Logo Lembaga Pers ITERA" 
+                    className="h-48 w-48 object-contain rounded-2xl relative z-10 transition duration-300 group-hover:scale-[1.03]" 
+                  />
                 </div>
-                <h3 className="font-extrabold text-white text-lg mb-2">{val.title}</h3>
-                <p className="text-itera-textMuted text-xs leading-relaxed">{val.desc}</p>
+                <div>
+                  <h3 className="text-xl font-black text-white">Logo Resmi LPI</h3>
+                  <p className="text-xs text-itera-textMuted mt-1">Institut Teknologi Sumatera</p>
+                </div>
               </div>
-            ))}
+
+              {/* Right Column: Logo Meanings */}
+              <div className="lg:col-span-8 space-y-8">
+                <div>
+                  <span className="px-3 py-1 rounded-full bg-itera-gold/10 border border-itera-gold/20 text-[10px] font-extrabold tracking-widest text-itera-gold uppercase">
+                    Identitas Visual
+                  </span>
+                  <h2 className="text-3xl font-black mt-3 text-white">Makna Logo LPI</h2>
+                  <p className="text-sm text-itera-textMuted mt-1">Setiap elemen grafis pada logo kami memegang filosofi dan nilai fungsional pers mahasiswa.</p>
+                </div>
+
+                <div className="space-y-6">
+                  {[
+                    {
+                      num: "1",
+                      title: "Kepala Gajah",
+                      desc: "Melambangkan hewan yang memiliki ingatan yang kuat dan hal ini sejalan dengan fungsi Lembaga Pers ITERA sebagai unit kegiatan mahasiswa yang bertugas untuk mengabadikan momen-momen penting yang ada atau berhubungan dengan Institut Teknologi Sumatera."
+                    },
+                    {
+                      num: "2",
+                      title: "Mata Lensa",
+                      desc: "Mempresentasikan kamera yang dimana dapat mengabadikan momen foto maupun video."
+                    },
+                    {
+                      num: "3",
+                      title: "Tulisan Lembaga Pers ITERA",
+                      desc: "Menjelaskan bahwa unit kegiatan mahasiswa ini bernama Lembaga Pers ITERA."
+                    }
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex gap-4 items-start p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition duration-300">
+                      <span className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-tr from-itera-gold to-itera-red flex items-center justify-center text-white text-md font-black shadow-md shadow-itera-red/10">
+                        {item.num}
+                      </span>
+                      <div className="space-y-1">
+                        <h4 className="font-extrabold text-white text-base">{item.title}</h4>
+                        <p className="text-xs text-itera-textMuted leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
