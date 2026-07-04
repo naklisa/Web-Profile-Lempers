@@ -42,9 +42,21 @@ export default function AboutPage() {
                 </svg>
               </div>
               <h3 className="text-2xl font-extrabold mb-4 text-white">Visi Kami</h3>
-              <p className="text-itera-textMuted leading-relaxed">
-                Menjadi lembaga pers mahasiswa yang kredibel, inovatif, dan berintegritas tinggi serta berpihak pada kepentingan civitas akademika dalam mengembangkan jurnalisme kampus yang kritis dan solutif.
-              </p>
+              <ul className="text-itera-textMuted space-y-4">
+                {[
+                  "Meningkatkan minat mengeksplorasi ilmu dan berkarya di kalangan mahasiswa Institut Teknologi Sumatera.",
+                  "Memberikan informasi aktual, cerdas, transparan, dan relevan dengan dinamika kampus.",
+                  "Sebagai tempat untuk memperluas relasi berdasarkan minat dan bakat yang sama.",
+                  "Sebagai wadah untuk menyalurkan hobi di bidang fotografi, videografi, jurnalistik, dan desain."
+                ].map((item, idx) => (
+                  <li key={idx} className="flex gap-3 items-start text-xs md:text-sm">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-itera-gold/20 border border-itera-gold/30 flex items-center justify-center text-itera-gold text-xs font-bold">
+                      {idx + 1}
+                    </span>
+                    <span className="leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Mission */}
@@ -57,15 +69,15 @@ export default function AboutPage() {
               <h3 className="text-2xl font-extrabold mb-4 text-white">Misi Kami</h3>
               <ul className="text-itera-textMuted space-y-4">
                 {[
-                  "Menghadirkan liputan berita yang objektif, akurat, dan berimbang di lingkungan ITERA.",
-                  "Menjadi fasilitator penyaluran aspirasi mahasiswa demi terwujudnya transparansi kampus.",
-                  "Mengembangkan minat, bakat, serta keahlian jurnalisme bagi anggota dan mahasiswa ITERA."
+                  "Menjadi wadah aspirasi, ekspresi dan gagasan mahasiswa Institut Teknologi Sumatera.",
+                  "Melatih dan meningkatkan kemampuan dalam bidang terkait fotografi, videografi, jurnalistik, dan desain.",
+                  "Menjadi media publikasi yang menjalankan fungsi kritik, refleksi, dan kontrol sosial terhadap perkembangan kampus ITERA."
                 ].map((item, idx) => (
-                  <li key={idx} className="flex gap-3 items-start">
+                  <li key={idx} className="flex gap-3 items-start text-xs md:text-sm">
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-itera-red/20 border border-itera-red/30 flex items-center justify-center text-itera-gold text-xs font-bold">
                       {idx + 1}
                     </span>
-                    <span>{item}</span>
+                    <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -80,31 +92,37 @@ export default function AboutPage() {
             <p className="text-itera-textMuted mt-3">Sinergi departemen dalam mewujudkan pers mahasiswa yang mandiri dan profesional.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
                 title: "Bidang Redaksi",
-                desc: "Mengelola seluruh alur produksi berita dari tahap riset, wawancara, penulisan, hingga penyuntingan akhir.",
-                divs: ["Reporter", "Editor", "Wartawan Kampus"],
+                desc: "Bertanggung jawab atas penyelenggaraan kegiatan jurnalistik Lembaga Pers ITERA secara menyeluruh, meliputi perencanaan redaksional, peliputan, penulisan, penyuntingan, dan penerbitan karya jurnalistik.",
+                divs: ["Reporter", "Penulis"],
                 color: "from-red-950/40 to-red-900/20 border-red-500/20 text-red-400"
               },
               {
-                title: "Bidang Public Relation (PR)",
-                desc: "Menjaga hubungan harmonis antara internal LPI dengan birokrasi kampus, UKM lain, serta pihak eksternal/partnership.",
-                divs: ["Humas", "Partnership & Ads Manager", "Event Organizer"],
-                color: "from-amber-950/40 to-amber-900/20 border-amber-500/20 text-itera-gold"
-              },
-              {
                 title: "Bidang Media Kreatif",
-                desc: "Memproduksi aset visual berupa infografis, poster, dokumentasi foto, dan video sinematik untuk publikasi multikanal.",
-                divs: ["Desainer Grafis", "Fotografer", "Videografer"],
+                desc: "Bertanggung jawab atas pengelolaan dan pengembangan konten visual, audiovisual, serta media digital sebagai sarana penyampaian informasi dan identitas UKM Lembaga Pers ITERA.",
+                divs: ["Fotografi", "Videografi", "Desain", "Publikasi Media Sosial"],
                 color: "from-cyan-950/40 to-cyan-900/20 border-cyan-500/20 text-cyan-400"
               },
               {
-                title: "Bidang IT & Sistem Informasi",
-                desc: "Mengembangkan dan memelihara seluruh infrastruktur digital LPI termasuk website resmi dan sistem aspirasi online.",
-                divs: ["Web Developer", "System Administrator", "Data Analyst"],
+                title: "Bidang Pengembangan",
+                desc: "Bertanggung jawab atas proses rekrutmen anggota baru, Magang, pembinaan, pemetaan kebutuhan skill, perancangan kurikulum pelatihan, serta membangun rasa kepemilikan (sense of belonging) anggota.",
+                divs: ["Magang", "Pembinaan", "Rekrutmen", "Pelatihan SDM"],
                 color: "from-indigo-950/40 to-indigo-900/20 border-indigo-500/20 text-indigo-400"
+              },
+              {
+                title: "Bidang Public Relation",
+                desc: "Bertanggung jawab atas pengelolaan hubungan internal dan eksternal LPI, membangun citra positif, menjalin relasi media partner, serta mewakili organisasi dalam berbagai agenda forum seremonial.",
+                divs: ["Hubungan Eksternal", "Media Partner", "Delegasi Resmi"],
+                color: "from-amber-950/40 to-amber-900/20 border-amber-500/20 text-itera-gold"
+              },
+              {
+                title: "Bidang Usaha",
+                desc: "Bertanggung jawab atas pengelolaan kegiatan usaha mandiri sebagai sumber pendukung finansial keberlanjutan organisasi, pembuatan merchandise, pengelolaan paid promote, dan studio dimensi.",
+                divs: ["Sponsorship & Donatur", "Merchandise", "Paid Promote", "Studio Dimensi"],
+                color: "from-emerald-950/40 to-emerald-900/20 border-emerald-500/20 text-emerald-400"
               }
             ].map((dept, idx) => (
               <div key={idx} className={`bg-gradient-to-br ${dept.color} rounded-3xl p-8 border hover:shadow-lg transition-all duration-300`}>
@@ -130,10 +148,10 @@ export default function AboutPage() {
               <div className="lg:col-span-4 flex flex-col items-center justify-center text-center space-y-4">
                 <div className="relative group p-4 rounded-3xl bg-white/5 border border-white/10 shadow-glow/5 hover:shadow-glow/15 transition-all duration-300">
                   <div className="absolute inset-0 bg-gradient-to-tr from-itera-red/10 to-itera-gold/10 rounded-3xl blur-xl pointer-events-none group-hover:scale-110 transition duration-300" />
-                  <img 
-                    src="/logo.png" 
-                    alt="Logo Lembaga Pers ITERA" 
-                    className="h-48 w-48 object-contain rounded-2xl relative z-10 transition duration-300 group-hover:scale-[1.03]" 
+                  <img
+                    src="/logo.png"
+                    alt="Logo Lembaga Pers ITERA"
+                    className="h-48 w-48 object-contain rounded-2xl relative z-10 transition duration-300 group-hover:scale-[1.03]"
                   />
                 </div>
                 <div>

@@ -15,7 +15,7 @@ const menuStructure = [
     type: 'dropdown',
     items: [
       { href: '/tentang', label: 'Tentang LPI' },
-      { href: '/tim', label: 'Tim & Redaksi' },
+      { href: '/tim', label: 'Struktur Organisasi' },
       { href: '/layanan', label: 'Layanan Kami' },
     ],
   },

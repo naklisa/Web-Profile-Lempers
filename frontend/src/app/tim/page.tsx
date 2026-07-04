@@ -21,6 +21,28 @@ export default function TeamPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Manage browser history to allow closing modal with mobile back button
+  useEffect(() => {
+    if (!selectedMember) return;
+
+    // Push a dummy state so back button acts as a close trigger
+    window.history.pushState({ modalOpen: true }, '');
+
+    const handlePopState = () => {
+      setSelectedMember(null);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      // Clean up the dummy state if closed via other means (X click, outside click, Escape)
+      if (window.history.state?.modalOpen) {
+        window.history.back();
+      }
+    };
+  }, [selectedMember]);
+
 
 
   // Flat list of all members for search indexing
@@ -78,7 +100,7 @@ export default function TeamPage() {
         <section className="relative px-6 py-20 md:py-32 max-w-7xl mx-auto z-10 text-center">
           <div className="max-w-3xl mx-auto space-y-6">
             <span className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold tracking-widest text-itera-gold uppercase">
-              Tim & Redaksi
+              Struktur Organisasi
             </span>
             <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
               Di Balik <span className="text-transparent bg-gradient-to-r from-itera-gold to-itera-red bg-clip-text">Suara Kampus</span>
@@ -129,7 +151,7 @@ export default function TeamPage() {
               {filteredMembers.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {filteredMembers.map((item, idx) => (
-                    <div 
+                    <div
                       key={idx}
                       onClick={() => setSelectedMember({ member: item.member, dept: item.deptName, role: item.roleName })}
                       className="glass-card p-5 rounded-2xl border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.02] cursor-pointer flex items-center gap-4"
@@ -165,16 +187,16 @@ export default function TeamPage() {
 
         {/* Member Detail Modal */}
         {selectedMember && (
-          <div 
+          <div
             onClick={() => setSelectedMember(null)}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300 cursor-pointer"
           >
-            <div 
+            <div
               onClick={(e) => e.stopPropagation()}
-              className="relative glass-card max-w-md w-full rounded-3xl p-8 border border-white/10 shadow-2xl space-y-6 transform scale-100 transition-transform duration-300 cursor-default"
+              className="relative glass-card max-w-md w-full rounded-3xl p-8 border border-white/10 shadow-2xl space-y-6 transform scale-100 transition-transform duration-300 cursor-default max-h-[90vh] overflow-y-auto custom-scrollbar"
             >
               {/* Close Button */}
-              <button 
+              <button
                 type="button"
                 onClick={() => setSelectedMember(null)}
                 className="absolute top-4 right-4 text-zinc-400 hover:text-white transition text-lg"
@@ -206,6 +228,12 @@ export default function TeamPage() {
                   <span>Instansi</span>
                   <span className="font-semibold text-white">Lembaga Pers ITERA</span>
                 </div>
+                {selectedMember.member.interestCode && (
+                  <div className="flex justify-between">
+                    <span>Kode Interest</span>
+                    <span className="font-bold text-itera-gold tracking-wider">{selectedMember.member.interestCode}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span>Status Kru</span>
                   <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold uppercase tracking-wider text-[9px]">Aktif</span>
@@ -220,9 +248,10 @@ export default function TeamPage() {
                   </p>
                   <div className="max-h-40 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
                     {selectedMember.staffList.map((staff, sIdx) => (
-                      <div 
+                      <div
                         key={sIdx}
-                        className="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5 text-xs"
+                        onClick={() => setSelectedMember({ member: staff, dept: selectedMember.dept, role: 'Staff' })}
+                        className="flex items-center justify-between p-2 rounded-xl bg-white/5 border border-white/5 hover:border-zinc-700 hover:bg-white/10 text-xs cursor-pointer transition-all duration-200"
                       >
                         <div className="min-w-0 flex-1">
                           <p className="font-bold text-white truncate">{staff.name}</p>
@@ -238,16 +267,16 @@ export default function TeamPage() {
               )}
 
               <div className="flex justify-center gap-3 pt-2">
-                <a 
-                  href="https://instagram.com" 
-                  target="_blank" 
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:bg-white/10 hover:text-white transition"
                   title="Instagram"
                 >
                   <i className="fa-brands fa-instagram" />
                 </a>
-                <a 
+                <a
                   href="https://linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"

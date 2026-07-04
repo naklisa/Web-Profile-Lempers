@@ -30,7 +30,7 @@ export default function Footer() {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <Link href="/" className="hover:text-white transition">Berita</Link>
               <Link href="/tentang" className="hover:text-white transition">Tentang LPI</Link>
-              <Link href="/tim" className="hover:text-white transition">Tim & Redaksi</Link>
+              <Link href="/tim" className="hover:text-white transition">Struktur Organisasi</Link>
               <Link href="/layanan" className="hover:text-white transition">Layanan</Link>
               <Link href="/blog" className="hover:text-white transition">Blog</Link>
               <Link href="/portfolio" className="hover:text-white transition">Portfolio</Link>

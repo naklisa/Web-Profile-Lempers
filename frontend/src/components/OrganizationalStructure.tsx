@@ -8,6 +8,7 @@ export interface Member {
   role: string;
   isHead?: boolean;
   division?: string;
+  interestCode?: string;
 }
 
 export interface Department {
@@ -38,11 +39,11 @@ export const organizationalData: Department[] = [
     bgColor: 'bg-itera-gold/10',
     accentBorder: 'border-itera-gold/30',
     members: [
-      { name: 'Arvel Alyagin', nim: '12340012', role: 'Pemimpin Umum', isHead: true },
-      { name: 'Refi Ikhsanti', nim: '123140126', role: 'Sekretaris Umum', isHead: true },
-      { name: 'Tarisya Hidayatul Rahmi', nim: '123450052', role: 'Bendahara Umum', isHead: true },
-      { name: 'Nesya Salsabila', nim: '124430111', role: 'Sekretaris 1' },
-      { name: 'Fitri Ainurrohmah', nim: '124290009', role: 'Bendahara 1' },
+      { name: 'Arvel Alyagin', nim: '12340012', role: 'Pemimpin Umum', isHead: true, interestCode: 'LP-F 2023210' },
+      { name: 'Refi Ikhsanti', nim: '123140126', role: 'Sekretaris Umum', isHead: true, interestCode: 'LP-F 2023206' },
+      { name: 'Tarisya Hidayatul Rahmi', nim: '123450052', role: 'Bendahara Umum', isHead: true, interestCode: 'LP-J 2023107' },
+      { name: 'Nesya Salsabila', nim: '124430111', role: 'Sekretaris 1', interestCode: 'LP-V 2024301' },
+      { name: 'Fitri Ainurrohmah', nim: '124290009', role: 'Bendahara 1', interestCode: 'LP-F 2024204' },
     ],
   },
   {
@@ -53,25 +54,25 @@ export const organizationalData: Department[] = [
     color: 'text-red-500',
     bgColor: 'bg-red-500/10',
     accentBorder: 'border-red-500/30',
-    members: [{ name: 'Nahli Saud Ramdani', nim: '123140049', role: 'Pemimpin Redaksi', isHead: true }],
+    members: [{ name: 'Nahli Saud Ramdani', nim: '123140049', role: 'Pemimpin Redaksi', isHead: true, interestCode: 'LP-F 2023203' }],
     subdivisions: [
       {
         title: 'Divisi Reporter',
-        head: { name: 'Dwi Fathina', nim: '124380077', role: 'Redaktur Berita' },
+        head: { name: 'Dwi Fathina', nim: '124380077', role: 'Redaktur Berita', interestCode: 'LP-J 2024103' },
         staff: [
-          { name: 'Selamya Al Fathi', nim: '124250004', role: 'Staff Reporter' },
-          { name: 'Ahmad Fariz Alfarisi', nim: '124220185', role: 'Staff Reporter' },
-          { name: 'Aulia Putri Saiganta', nim: '124490035', role: 'Staff Reporter' },
+          { name: 'Selamya Al Fathi', nim: '124250004', role: 'Staff Reporter', interestCode: 'LP-J 2024104' },
+          { name: 'Ahmad Fariz Alfarisi', nim: '124220185', role: 'Staff Reporter', interestCode: 'LP-J 2024115' },
+          { name: 'Aulia Putri Saiganta', nim: '124490035', role: 'Staff Reporter', interestCode: 'LP-J 2024110' },
         ],
       },
       {
         title: 'Divisi Penulis',
-        head: { name: 'Husni Rosidah', nim: '124430073', role: 'Redaktur Opini' },
+        head: { name: 'Husni Rosidah', nim: '124430073', role: 'Redaktur Opini', interestCode: 'LP-J 2024105' },
         staff: [
-          { name: 'Angelica Margareth', nim: '123500008', role: 'Staff Penulis' },
-          { name: 'Refsa Fadilah Kirana', nim: '124430127', role: 'Staff Penulis' },
-          { name: 'Aliefiandra Akbar Syahputra', nim: '124140076', role: 'Staff Penulis' },
-          { name: 'Sandrak Antoni Sitorus', nim: '124480090', role: 'Staff Penulis' },
+          { name: 'Angelica Margareth', nim: '123500008', role: 'Staff Penulis', interestCode: 'LP-J 2023103' },
+          { name: 'Refsa Fadilah Kirana', nim: '124430127', role: 'Staff Penulis', interestCode: 'LP-J 2024109' },
+          { name: 'Aliefiandra Akbar Syahputra', nim: '124140076', role: 'Staff Penulis', interestCode: 'LP-J 2024101' },
+          { name: 'Sandrak Antoni Sitorus', nim: '124480090', role: 'Staff Penulis', interestCode: 'LP-J 2024108' },
         ],
       },
     ],
@@ -84,16 +85,16 @@ export const organizationalData: Department[] = [
     color: 'text-indigo-400',
     bgColor: 'bg-indigo-500/10',
     accentBorder: 'border-indigo-500/30',
-    members: [{ name: 'Refa Destiny Pranata', nim: '123450016', role: 'Public Relation Manager', isHead: true }],
+    members: [{ name: 'Refa Destiny Pranata', nim: '123450016', role: 'Public Relation Manager', isHead: true, interestCode: 'LP-V 2023304' }],
     subdivisions: [
       {
         title: 'Tim PR',
-        head: { name: 'Refa Destiny Pranata', nim: '123450016', role: 'Manager' },
+        head: { name: 'Refa Destiny Pranata', nim: '123450016', role: 'Manager', interestCode: 'LP-V 2023304' },
         staff: [
-          { name: 'Nahdia Shofi Rahayu', nim: '123430100', role: 'Staff PR' },
-          { name: 'Dewo Prayogo', nim: '124390004', role: 'Staff PR' },
-          { name: 'Miftah Andini', nim: '124500020', role: 'Staff PR' },
-          { name: 'Mochammad Raka Aryandwika', nim: '124390009', role: 'Staff PR' },
+          { name: 'Nahdia Shofi Rahayu', nim: '123430100', role: 'Staff PR', interestCode: 'LP-J 2023108' },
+          { name: 'Dewo Prayogo', nim: '124390004', role: 'Staff PR', interestCode: 'LP-V 2024304' },
+          { name: 'Miftah Andini', nim: '124500020', role: 'Staff PR', interestCode: 'LP-J 2024102' },
+          { name: 'Mochammad Raka Aryandwika', nim: '124390009', role: 'Staff PR', interestCode: 'LP-F 2024206' },
         ],
       },
     ],
@@ -106,40 +107,40 @@ export const organizationalData: Department[] = [
     color: 'text-teal-400',
     bgColor: 'bg-teal-500/10',
     accentBorder: 'border-teal-500/30',
-    members: [{ name: 'Rizka Nabila NS', nim: '123340067', role: 'Produser Media Kreatif', isHead: true }],
+    members: [{ name: 'Rizka Nabila NS', nim: '123340067', role: 'Produser Media Kreatif', isHead: true, interestCode: 'LP-V 2023303' }],
     subdivisions: [
       {
         title: 'Divisi Desain',
-        head: { name: 'Garis Rayya Rabbani', nim: '123140018', role: 'Kepala Divisi' },
+        head: { name: 'Garis Rayya Rabbani', nim: '123140018', role: 'Kepala Divisi', interestCode: 'LP-F 2023207' },
         staff: [
-          { name: 'Kyla Yasmine Anadila', nim: '124380013', role: 'Designer' },
-          { name: 'Amelia febrian', nim: '124380067', role: 'Designer' },
-          { name: 'Nabila Maulida', nim: '124380082', role: 'Designer' },
+          { name: 'Kyla Yasmine Anadila', nim: '124380013', role: 'Designer', interestCode: 'LP-D 2024403' },
+          { name: 'Amelia febrian', nim: '124380067', role: 'Designer', interestCode: 'LP-D 2024404' },
+          { name: 'Nabila Maulida', nim: '124380082', role: 'Designer', interestCode: 'LP-D 2024402' },
         ],
       },
       {
         title: 'Divisi Fotografi',
-        head: { name: 'Aqeel Mawla Rachman', nim: '124390059', role: 'Kepala Divisi' },
+        head: { name: 'Aqeel Mawla Rachman', nim: '124390059', role: 'Kepala Divisi', interestCode: 'LP-F 2024201' },
         staff: [
-          { name: 'Raihan Abdullah', nim: '124310043', role: 'Fotografer' },
-          { name: 'Ainindya putri nayla', nim: '124240006', role: 'Fotografer' },
-          { name: 'Muhamamd Rifa Andiyansyah', nim: '124280106', role: 'Fotografer' },
+          { name: 'Raihan Abdullah', nim: '124310043', role: 'Fotografer', interestCode: 'LP-F 2024207' },
+          { name: 'Ainindya putri nayla', nim: '124240006', role: 'Fotografer', interestCode: 'LP-F 2024202' },
+          { name: 'Muhamamd Rifa Andiyansyah', nim: '124280106', role: 'Fotografer', interestCode: 'LP-J 2024114' },
         ],
       },
       {
         title: 'Divisi Videografi',
-        head: { name: 'Reza Ramadhan', nim: '123290069', role: 'Kepala Divisi' },
+        head: { name: 'Reza Ramadhan', nim: '123290069', role: 'Kepala Divisi', interestCode: 'LP-V 2023301' },
         staff: [
-          { name: 'Ufairah Sayyidah Marwa', nim: '124240016', role: 'Videographer' },
-          { name: 'Nia Ramadhani', nim: '124120054', role: 'Videographer' },
+          { name: 'Ufairah Sayyidah Marwa', nim: '124240016', role: 'Videographer', interestCode: 'LP-V 2024303' },
+          { name: 'Nia Ramadhani', nim: '124120054', role: 'Videographer', interestCode: 'LP-V 2024305' },
         ],
       },
       {
         title: 'Divisi Publikasi Media Sosial',
-        head: { name: 'Feby Angelina', nim: '123450039', role: 'Kepala Divisi' },
+        head: { name: 'Feby Angelina', nim: '123450039', role: 'Kepala Divisi', interestCode: 'LP-D 2023402' },
         staff: [
-          { name: 'Haura Haya Dzakiyyah', nim: '124460017', role: 'Social Media' },
-          { name: 'Nur Intan Permata Sari', nim: '124260159', role: 'Social Media' },
+          { name: 'Haura Haya Dzakiyyah', nim: '124460017', role: 'Social Media', interestCode: 'LP-J 2024112' },
+          { name: 'Nur Intan Permata Sari', nim: '124260159', role: 'Social Media', interestCode: 'LP-J 2024106' },
         ],
       },
     ],
@@ -152,16 +153,16 @@ export const organizationalData: Department[] = [
     color: 'text-purple-400',
     bgColor: 'bg-purple-500/10',
     accentBorder: 'border-purple-500/30',
-    members: [{ name: 'Febrian Chandra Kusuma', nim: '124340029', role: 'Project Manager', isHead: true }],
+    members: [{ name: 'Febrian Chandra Kusuma', nim: '124340029', role: 'Project Manager', isHead: true, interestCode: 'LP-J 2024107' }],
     subdivisions: [
       {
         title: 'Tim Pengembangan',
-        head: { name: 'Febrian Chandra Kusuma', nim: '124340029', role: 'Manager' },
+        head: { name: 'Febrian Chandra Kusuma', nim: '124340029', role: 'Manager', interestCode: 'LP-J 2024107' },
         staff: [
-          { name: 'Humaidi Zendi', nim: '124300026', role: 'Developer' },
-          { name: 'Ahmad Rijal Faqihudin', nim: '124460042', role: 'Developer' },
-          { name: 'Muhammad Chalid Arkan Aimar', nim: '124430138', role: 'Developer' },
-          { name: 'Keysha Naimira Putri', nim: '124280013', role: 'Developer' },
+          { name: 'Humaidi Zendi', nim: '124300026', role: 'Developer', interestCode: 'LP-F 2024203' },
+          { name: 'Ahmad Rijal Faqihudin', nim: '124460042', role: 'Developer', interestCode: 'LP-V 2024302' },
+          { name: 'Muhammad Chalid Arkan Aimar', nim: '124430138', role: 'Developer', interestCode: 'LP-J 2024111' },
+          { name: 'Keysha Naimira Putri', nim: '124280013', role: 'Developer', interestCode: 'LP-D 2024401' },
         ],
       },
     ],
@@ -174,14 +175,14 @@ export const organizationalData: Department[] = [
     color: 'text-amber-400',
     bgColor: 'bg-amber-500/10',
     accentBorder: 'border-amber-500/30',
-    members: [{ name: 'Fairuz Ary Syifa', nim: '123450044', role: 'Manager Usaha', isHead: true }],
+    members: [{ name: 'Fairuz Ary Syifa', nim: '123450044', role: 'Manager Usaha', isHead: true, interestCode: 'LP-J 2023113' }],
     subdivisions: [
       {
         title: 'Tim Usaha',
-        head: { name: 'Fairuz Ary Syifa', nim: '123450044', role: 'Manager' },
+        head: { name: 'Fairuz Ary Syifa', nim: '123450044', role: 'Manager', interestCode: 'LP-J 2023113' },
         staff: [
-          { name: 'Miftah Ulfa Rahmi', nim: '124490067', role: 'Staff Usaha' },
-          { name: 'Syahnandria Ghassani Galazardi', nim: '124260107', role: 'Staff Usaha' },
+          { name: 'Miftah Ulfa Rahmi', nim: '124490067', role: 'Staff Usaha', interestCode: 'LP-F 2024208' },
+          { name: 'Syahnandria Ghassani Galazardi', nim: '124260107', role: 'Staff Usaha', interestCode: 'LP-J 2024113' },
         ],
       },
     ],
