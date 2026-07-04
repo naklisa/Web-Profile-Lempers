@@ -9,9 +9,10 @@ __pycache__/
 *.py[cod]
 *.env
 .venv/
-D:\ORGANISASIEH\Lempers\.venv
-D:\ORGANISASIEH\Lempers\backend\.venv
-
+backend/.venv/
 
 # Editor
 .vscode/
+
+# Bahan Prompt
+BpI/
